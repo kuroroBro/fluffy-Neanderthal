@@ -6,7 +6,7 @@
 <title>Poetry for Neanderthals 🦴</title>
 <meta name="description" content="The party game of big words and small brains — get your team to guess the phrase using only one-syllable words.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦴</text></svg>">
-<link rel="stylesheet" href="style.css?v=5">
+<link rel="stylesheet" href="style.css?v=6">
 </head>
 <body>
 
@@ -15,7 +15,7 @@
   <!-- SETUP SCREEN -->
   <section id="screen-setup" class="screen active">
     <header class="hero">
-      <h1><span class="club-emoji">🦴</span> Poetry for Neanderthals</h1>
+      <h1><img src="assets/club.png" class="club-logo" alt="" aria-hidden="true"> Poetry for Neanderthals</h1>
       <p class="tagline">The Game of Big Words and Small Brains</p>
     </header>
 
@@ -70,7 +70,7 @@
       <h2 id="handoffTeamName" class="handoff-team">Team 1</h2>
       <p class="handoff-sub">Hand the device to your clue-caveman. Everyone else: guess loud!</p>
       <div id="handoffScoreboard" class="mini-scoreboard"></div>
-      <button id="readyBtn" class="btn btn-primary btn-lg" type="button">We're Ready! 🦴</button>
+      <button id="readyBtn" class="btn btn-primary btn-lg" type="button">We're Ready! <img src="assets/club.png" class="btn-club-icon" alt="" aria-hidden="true"></button>
     </div>
   </section>
 
@@ -83,7 +83,7 @@
     </div>
 
     <div class="card-stage">
-      <div id="clubFlash" class="club-flash">BAD! <span>🦴</span></div>
+      <div id="clubFlash" class="club-flash">BAD! <img src="assets/club.png" class="club-flash-icon" alt="" aria-hidden="true"></div>
       <div class="secret-card" id="secretCard">
         <div class="secret-category" id="secretCategory">Category</div>
         <div class="tier tier-top">
@@ -104,7 +104,7 @@
         <button id="phraseBtn" class="btn btn-phrase" type="button">🔽 Full Phrase <span class="pts">+3</span></button>
       </div>
       <div class="action-row action-row-secondary">
-        <button id="clubbedBtn" class="btn btn-club" type="button">🦴 CLUBBED!</button>
+        <button id="clubbedBtn" class="btn btn-club" type="button"><img src="assets/club.png" class="btn-club-icon" alt="" aria-hidden="true"> CLUBBED!</button>
         <button id="skipBtn" class="btn btn-skip" type="button">⏭ Skip</button>
       </div>
     </div>
@@ -134,7 +134,7 @@
 
 </div>
 
-<script src="cards.js?v=5"></script>
-<script src="app.js?v=5"></script>
+<script src="cards.js?v=6"></script>
+<script src="app.js?v=6"></script>
 </body>
 </html>
