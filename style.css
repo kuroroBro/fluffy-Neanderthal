@@ -15,6 +15,13 @@
   --glass-bg-flat: rgba(255,255,255,0.08);
   --glass-border: rgba(255,255,255,0.28);
   --glass-shadow: 0 8px 32px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.18);
+  --parchment-1: #f4e7c8;
+  --parchment-2: #e6cd9a;
+  --parchment-3: #cfab72;
+  --card-border: #3b2417;
+  --ink: #4a2f1c;
+  --ink-dim: #8a6a45;
+  --ink-stamp: #8a3324;
   font-size: 16px;
 }
 
@@ -355,18 +362,29 @@ html, body {
 .secret-card {
   width: 100%;
   min-height: 260px;
-  background: linear-gradient(160deg, rgba(255,255,255,0.20), rgba(255,255,255,0.06));
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border-radius: 28px;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(255,255,255,0.35), transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(120,80,40,0.18), transparent 45%),
+    radial-gradient(circle at 10% 90%, rgba(120,80,40,0.15), transparent 40%),
+    linear-gradient(160deg, var(--parchment-1), var(--parchment-2) 55%, var(--parchment-3));
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.29  0 0 0 0 0.2  0 0 0 0 0.1  0 0 0 0.06 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"),
+    radial-gradient(circle at 20% 15%, rgba(255,255,255,0.35), transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(120,80,40,0.18), transparent 45%),
+    radial-gradient(circle at 10% 90%, rgba(120,80,40,0.15), transparent 40%),
+    linear-gradient(160deg, var(--parchment-1), var(--parchment-2) 55%, var(--parchment-3));
+  border-radius: 22px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 22px;
-  border: 1px solid rgba(255,255,255,0.35);
-  box-shadow: 0 16px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.25);
+  padding: 26px 24px;
+  border: 10px solid var(--card-border);
+  box-shadow:
+    0 16px 40px rgba(0,0,0,0.5),
+    inset 0 0 0 2px rgba(255,255,255,0.25),
+    inset 0 0 34px rgba(59,36,23,0.35);
   gap: 4px;
   position: relative;
   overflow: hidden;
@@ -375,14 +393,25 @@ html, body {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(115deg, rgba(255,255,255,0.16) 0%, transparent 35%);
+  box-shadow: inset 0 0 46px rgba(59,36,23,0.4);
+  pointer-events: none;
+}
+.card-mascot {
+  position: absolute;
+  bottom: -6px;
+  right: 4px;
+  height: 30%;
+  max-height: 100px;
+  width: auto;
+  opacity: 0.9;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
   pointer-events: none;
 }
 .secret-category {
   text-transform: uppercase;
   letter-spacing: 1.5px;
   font-size: 0.8rem;
-  color: var(--accent-2);
+  color: var(--ink-stamp);
   font-weight: 700;
   margin-bottom: 10px;
 }
@@ -394,18 +423,18 @@ html, body {
   text-transform: uppercase;
   letter-spacing: 1px;
   font-size: 0.7rem;
-  color: var(--text-dim);
+  color: var(--ink-dim);
   font-weight: 700;
   margin-bottom: 2px;
 }
 .tier-points {
-  color: var(--accent-2);
+  color: var(--ink-stamp);
   font-weight: 900;
 }
 .tier-top .tier-value {
   font-size: clamp(1.4rem, 6vw, 2rem);
   font-weight: 800;
-  color: var(--text-dim);
+  color: var(--ink-dim);
 }
 .tier-divider {
   display: flex;
@@ -413,8 +442,8 @@ html, body {
   gap: 8px;
   width: 100%;
   font-size: 0.75rem;
-  color: var(--text-dim);
-  opacity: 0.7;
+  color: var(--ink-dim);
+  opacity: 0.8;
   margin: 8px 0;
   font-style: italic;
 }
@@ -423,12 +452,13 @@ html, body {
   content: "";
   flex: 1;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(74,47,28,0.35), transparent);
 }
 .tier-phrase .tier-value {
   font-size: clamp(2rem, 9vw, 3rem);
   font-weight: 900;
   line-height: 1.15;
+  color: var(--ink);
 }
 
 .club-flash {
@@ -441,7 +471,7 @@ html, body {
   justify-content: center;
   font-size: 3rem;
   font-weight: 900;
-  border-radius: 24px;
+  border-radius: 22px;
   z-index: 5;
   text-transform: uppercase;
   letter-spacing: 2px;
