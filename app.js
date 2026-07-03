@@ -60,6 +60,20 @@
     return div.innerHTML;
   }
 
+  const STORAGE_PREFIX = "pfn.";
+
+  function clearAppStorage() {
+    [window.localStorage, window.sessionStorage].forEach((store) => {
+      try {
+        Object.keys(store)
+          .filter((k) => k.startsWith(STORAGE_PREFIX))
+          .forEach((k) => store.removeItem(k));
+      } catch (e) {
+        // storage unavailable (private browsing, etc.) — nothing to clear
+      }
+    });
+  }
+
   // ---------- setup screen ----------
   function makeTeam() {
     const id = state.nextTeamId++;
@@ -150,6 +164,24 @@
     $("startGameBtn").addEventListener("click", startGame);
   }
 
+  function resetSetup() {
+    clearAppStorage();
+    state.nextTeamId = 1;
+    state.teams = [makeTeam(), makeTeam()];
+    state.roundSeconds = 60;
+    state.turnsPerTeam = 3;
+    state.selectedCategories = new Set(Object.keys(DECK));
+
+    renderTeamList();
+    renderCategoryList();
+    document.querySelectorAll("#timerChoices .chip").forEach((c) => {
+      c.classList.toggle("chip-active", Number(c.dataset.value) === state.roundSeconds);
+    });
+    document.querySelectorAll("#turnChoices .chip").forEach((c) => {
+      c.classList.toggle("chip-active", Number(c.dataset.value) === state.turnsPerTeam);
+    });
+  }
+
   // ---------- game flow ----------
   function buildDeck() {
     const cards = [];
@@ -159,11 +191,23 @@
     return shuffle(cards);
   }
 
+  function ensureUniqueTeamNames() {
+    const seen = new Map();
+    state.teams.forEach((t) => {
+      const key = t.name.trim().toLowerCase();
+      const count = (seen.get(key) || 0) + 1;
+      seen.set(key, count);
+      if (count > 1) t.name = `${t.name.trim()} (${count})`;
+    });
+  }
+
   function startGame() {
     state.teams.forEach((t) => {
       if (!t.name.trim()) t.name = `Team ${t.id}`;
       t.score = 0;
     });
+    ensureUniqueTeamNames();
+    renderTeamList();
     if (state.teams.length < MIN_TEAMS) return;
     if (state.selectedCategories.size === 0) return;
 
@@ -194,10 +238,17 @@
     showScreen("screen-handoff");
   }
 
-  function drawCard() {
+  function drawCard(avoidCard) {
     if (state.deck.length === 0) {
       state.deck = shuffle(state.discard);
       state.discard = [];
+      // Avoid handing back the exact card that was just shown when the
+      // deck recycles from the discard pile.
+      const lastIdx = state.deck.length - 1;
+      if (avoidCard && lastIdx > 0 && state.deck[lastIdx] === avoidCard) {
+        const swapIdx = Math.floor(Math.random() * lastIdx);
+        [state.deck[lastIdx], state.deck[swapIdx]] = [state.deck[swapIdx], state.deck[lastIdx]];
+      }
     }
     if (state.deck.length === 0) return null;
     return state.deck.pop();
@@ -219,8 +270,9 @@
   }
 
   function nextCard() {
+    const previousCard = state.currentCard;
     if (state.currentCard) state.discard.push(state.currentCard);
-    state.currentCard = drawCard();
+    state.currentCard = drawCard(previousCard);
     renderCard();
   }
 
@@ -356,5 +408,6 @@
     on("clubbedBtn", handleClubbed);
     on("nextTurnBtn", handleNextTurn);
     on("playAgainBtn", playAgain);
+    on("resetBtn", resetSetup);
   });
 })();

@@ -96,6 +96,27 @@ html, body {
 }
 .setup-card h2:first-of-type { margin-top: 4px; }
 
+.setup-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.setup-card-header h2 { margin: 0; }
+.btn-reset-link {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 4px 0;
+  text-decoration: underline;
+  text-decoration-color: rgba(255,255,255,0.3);
+  white-space: nowrap;
+}
+.btn-reset-link:hover { color: var(--accent-2); }
+
 .team-list { display: flex; flex-direction: column; gap: 8px; }
 .team-row {
   display: flex;
