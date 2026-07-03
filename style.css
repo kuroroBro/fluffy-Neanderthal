@@ -11,6 +11,10 @@
   --text: #f5ead9;
   --text-dim: #cbb99a;
   --radius: 18px;
+  --glass-bg: linear-gradient(160deg, rgba(255,255,255,0.16), rgba(255,255,255,0.05));
+  --glass-bg-flat: rgba(255,255,255,0.08);
+  --glass-border: rgba(255,255,255,0.28);
+  --glass-shadow: 0 8px 32px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.18);
   font-size: 16px;
 }
 
@@ -20,7 +24,13 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  background: radial-gradient(circle at 50% 0%, var(--bg-1), var(--bg-0) 70%);
+  min-height: 100%;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(255,122,26,0.38), transparent 45%),
+    radial-gradient(circle at 88% 12%, rgba(129,92,191,0.42), transparent 50%),
+    radial-gradient(circle at 50% 95%, rgba(255,183,3,0.28), transparent 55%),
+    linear-gradient(160deg, #1a0f2e 0%, #2a1245 45%, #3a1220 100%);
+  background-attachment: fixed;
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   -webkit-tap-highlight-color: transparent;
@@ -68,11 +78,13 @@ html, body {
 
 .card {
   width: 100%;
-  background: linear-gradient(160deg, var(--stone), var(--stone-light));
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-radius: var(--radius);
   padding: 20px;
-  box-shadow: 0 8px 0 rgba(0,0,0,0.35), 0 12px 24px rgba(0,0,0,0.3);
-  border: 2px solid rgba(255,255,255,0.06);
+  box-shadow: var(--glass-shadow);
+  border: 1px solid var(--glass-border);
 }
 
 .setup-card h2 {
@@ -89,7 +101,8 @@ html, body {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: rgba(0,0,0,0.2);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
   border-radius: 12px;
   padding: 6px 6px 6px 12px;
 }
@@ -123,8 +136,8 @@ html, body {
 
 .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
 .chip {
-  background: rgba(0,0,0,0.25);
-  border: 2px solid transparent;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.14);
   color: var(--text);
   padding: 8px 14px;
   border-radius: 999px;
@@ -143,7 +156,8 @@ html, body {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: rgba(0,0,0,0.2);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
   border-radius: 10px;
   padding: 10px 12px;
   cursor: pointer;
@@ -164,12 +178,15 @@ html, body {
 .btn:active { transform: scale(0.96); }
 
 .btn-primary {
-  background: linear-gradient(180deg, var(--accent-2), var(--accent));
+  background: linear-gradient(160deg, rgba(255,255,255,0.35), rgba(255,255,255,0) 45%), linear-gradient(180deg, var(--accent-2), var(--accent));
   color: #1c120a;
-  box-shadow: 0 4px 0 #b35400;
+  box-shadow: 0 4px 0 #b35400, inset 0 1px 0 rgba(255,255,255,0.35);
 }
 .btn-secondary {
-  background: rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.09);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.16);
   color: var(--text);
   padding: 10px 16px;
   font-size: 0.9rem;
@@ -238,7 +255,8 @@ html, body {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: rgba(0,0,0,0.25);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.14);
   border-radius: 12px;
   padding: 10px 14px;
 }
@@ -294,17 +312,28 @@ html, body {
 .secret-card {
   width: 100%;
   min-height: 260px;
-  background: linear-gradient(160deg, var(--stone-light), var(--stone));
-  border-radius: 24px;
+  background: linear-gradient(160deg, rgba(255,255,255,0.20), rgba(255,255,255,0.06));
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-radius: 28px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
   padding: 22px;
-  border: 3px solid rgba(255,255,255,0.08);
-  box-shadow: 0 10px 0 rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.35);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.25);
   gap: 4px;
+  position: relative;
+  overflow: hidden;
+}
+.secret-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, rgba(255,255,255,0.16) 0%, transparent 35%);
+  pointer-events: none;
 }
 .secret-category {
   text-transform: uppercase;
@@ -336,11 +365,22 @@ html, body {
   color: var(--text-dim);
 }
 .tier-divider {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
   font-size: 0.75rem;
   color: var(--text-dim);
-  opacity: 0.6;
-  margin: 6px 0;
+  opacity: 0.7;
+  margin: 8px 0;
   font-style: italic;
+}
+.tier-divider::before,
+.tier-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
 }
 .tier-phrase .tier-value {
   font-size: clamp(2rem, 9vw, 3rem);
@@ -411,10 +451,10 @@ html, body {
   font-size: 0.85em;
   opacity: 0.85;
 }
-.btn-top { background: #3d8bd4; color: white; box-shadow: 0 4px 0 #245c8f; }
-.btn-phrase { background: var(--good); color: white; box-shadow: 0 4px 0 #2e7d32; }
-.btn-club { background: var(--bad); color: white; box-shadow: 0 4px 0 #99101c; }
-.btn-skip { background: var(--skip); color: white; box-shadow: 0 4px 0 #454b50; }
+.btn-top { background: linear-gradient(160deg, rgba(255,255,255,0.3), rgba(255,255,255,0) 45%), #3d8bd4; color: white; box-shadow: 0 4px 0 #245c8f, inset 0 1px 0 rgba(255,255,255,0.3); }
+.btn-phrase { background: linear-gradient(160deg, rgba(255,255,255,0.3), rgba(255,255,255,0) 45%), var(--good); color: white; box-shadow: 0 4px 0 #2e7d32, inset 0 1px 0 rgba(255,255,255,0.3); }
+.btn-club { background: linear-gradient(160deg, rgba(255,255,255,0.3), rgba(255,255,255,0) 45%), var(--bad); color: white; box-shadow: 0 4px 0 #99101c, inset 0 1px 0 rgba(255,255,255,0.3); }
+.btn-skip { background: linear-gradient(160deg, rgba(255,255,255,0.3), rgba(255,255,255,0) 45%), var(--skip); color: white; box-shadow: 0 4px 0 #454b50, inset 0 1px 0 rgba(255,255,255,0.3); }
 
 /* ---------- Round end / final ---------- */
 .round-end-card, .final-card {
