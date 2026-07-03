@@ -185,8 +185,11 @@
 
   function showHandoff() {
     const team = currentTurnTeam();
-    $("handoffTeamName").textContent = team.name;
-    $("handoffTeamName").style.color = team.color;
+    const nameEl = $("handoffTeamName");
+    if (nameEl) {
+      nameEl.textContent = team.name;
+      nameEl.style.color = team.color;
+    }
     renderMiniScoreboard($("handoffScoreboard"), state.teams);
     showScreen("screen-handoff");
   }
@@ -201,15 +204,18 @@
   }
 
   function renderCard() {
+    const categoryEl = $("secretCategory");
+    const topEl = $("secretTop");
+    const phraseEl = $("secretPhrase");
     if (!state.currentCard) {
-      $("secretCategory").textContent = "";
-      $("secretTop").textContent = "No more cards!";
-      $("secretPhrase").textContent = "";
+      if (categoryEl) categoryEl.textContent = "";
+      if (topEl) topEl.textContent = "No more cards!";
+      if (phraseEl) phraseEl.textContent = "";
       return;
     }
-    $("secretCategory").textContent = state.currentCard.category;
-    $("secretTop").textContent = state.currentCard.top;
-    $("secretPhrase").textContent = state.currentCard.phrase;
+    if (categoryEl) categoryEl.textContent = state.currentCard.category;
+    if (topEl) topEl.textContent = state.currentCard.top;
+    if (phraseEl) phraseEl.textContent = state.currentCard.phrase;
   }
 
   function nextCard() {
@@ -220,11 +226,18 @@
 
   function updatePlayHeader() {
     const team = currentTurnTeam();
-    $("playTeamName").textContent = team.name;
-    $("playTeamName").style.color = team.color;
-    $("playScore").textContent = team.score;
-    $("playTimer").textContent = state.timeLeft;
-    $("playTimer").classList.toggle("urgent", state.timeLeft <= 10);
+    const nameEl = $("playTeamName");
+    if (nameEl) {
+      nameEl.textContent = team.name;
+      nameEl.style.color = team.color;
+    }
+    const scoreEl = $("playScore");
+    if (scoreEl) scoreEl.textContent = team.score;
+    const timerEl = $("playTimer");
+    if (timerEl) {
+      timerEl.textContent = state.timeLeft;
+      timerEl.classList.toggle("urgent", state.timeLeft <= 10);
+    }
   }
 
   function startTurn() {
@@ -309,10 +322,13 @@
     const sorted = state.teams.slice().sort((a, b) => b.score - a.score);
     const topScore = sorted[0].score;
     const winners = sorted.filter((t) => t.score === topScore);
-    $("finalWinner").textContent =
-      winners.length > 1
-        ? `It's a Tie: ${winners.map((w) => w.name).join(" & ")}!`
-        : `${winners[0].name} Wins!`;
+    const winnerEl = $("finalWinner");
+    if (winnerEl) {
+      winnerEl.textContent =
+        winners.length > 1
+          ? `It's a Tie: ${winners.map((w) => w.name).join(" & ")}!`
+          : `${winners[0].name} Wins!`;
+    }
     renderMiniScoreboard($("finalScoreboard"), state.teams);
     showScreen("screen-final");
   }
@@ -322,14 +338,23 @@
   }
 
   // ---------- wire up ----------
+  function on(id, handler) {
+    const el = $(id);
+    if (!el) {
+      console.error(`Missing #${id} — page may be a stale cached mix of files. Hard-refresh.`);
+      return;
+    }
+    el.addEventListener("click", handler);
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     initSetupScreen();
-    $("readyBtn").addEventListener("click", startTurn);
-    $("topBtn").addEventListener("click", handleTopWord);
-    $("phraseBtn").addEventListener("click", handleFullPhrase);
-    $("skipBtn").addEventListener("click", handleSkip);
-    $("clubbedBtn").addEventListener("click", handleClubbed);
-    $("nextTurnBtn").addEventListener("click", handleNextTurn);
-    $("playAgainBtn").addEventListener("click", playAgain);
+    on("readyBtn", startTurn);
+    on("topBtn", handleTopWord);
+    on("phraseBtn", handleFullPhrase);
+    on("skipBtn", handleSkip);
+    on("clubbedBtn", handleClubbed);
+    on("nextTurnBtn", handleNextTurn);
+    on("playAgainBtn", playAgain);
   });
 })();
