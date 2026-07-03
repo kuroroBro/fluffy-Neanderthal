@@ -18,7 +18,12 @@ const DECK = {
     { top: "Willy", phrase: "Free Willy" },
     { top: "Man", phrase: "Spider Man" },
     { top: "Mission", phrase: "Mission Impossible" },
-    { top: "Panda", phrase: "Kung Fu Panda" }
+    { top: "Panda", phrase: "Kung Fu Panda" },
+    { top: "Kid", phrase: "The Karate Kid" },
+    { top: "Strange", phrase: "Doctor Strange" },
+    { top: "University", phrase: "Monsters University" },
+    { top: "Race", phrase: "The Amazing Race" },
+    { top: "Idol", phrase: "American Idol" }
   ],
   "Food & Drink": [
     { top: "Cheese", phrase: "Grilled Cheese" },
@@ -35,7 +40,12 @@ const DECK = {
     { top: "Juice", phrase: "Orange Juice" },
     { top: "Chips", phrase: "Potato Chips" },
     { top: "Soup", phrase: "Chicken Soup" },
-    { top: "Milk", phrase: "Chocolate Milk" }
+    { top: "Milk", phrase: "Chocolate Milk" },
+    { top: "Steak", phrase: "Grilled Steak" },
+    { top: "Syrup", phrase: "Maple Syrup" },
+    { top: "Donut", phrase: "Glazed Donut" },
+    { top: "Pizza", phrase: "Deep Dish Pizza" },
+    { top: "Eggs", phrase: "Scrambled Eggs" }
   ],
   "Animals": [
     { top: "Bear", phrase: "Polar Bear" },
@@ -52,7 +62,12 @@ const DECK = {
     { top: "Bat", phrase: "Fruit Bat" },
     { top: "Bee", phrase: "Honey Bee" },
     { top: "Cobra", phrase: "King Cobra" },
-    { top: "Goat", phrase: "Mountain Goat" }
+    { top: "Goat", phrase: "Mountain Goat" },
+    { top: "Panda", phrase: "Giant Panda" },
+    { top: "Dragon", phrase: "Komodo Dragon" },
+    { top: "Eel", phrase: "Electric Eel" },
+    { top: "Squirrel", phrase: "Flying Squirrel" },
+    { top: "Frog", phrase: "Poison Frog" }
   ],
   "Famous Folks": [
     { top: "Claus", phrase: "Santa Claus" },
@@ -69,7 +84,12 @@ const DECK = {
     { top: "Lisa", phrase: "Mona Lisa" },
     { top: "Arthur", phrase: "King Arthur" },
     { top: "Hood", phrase: "Robin Hood" },
-    { top: "Goose", phrase: "Mother Goose" }
+    { top: "Goose", phrase: "Mother Goose" },
+    { top: "Lee", phrase: "Bruce Lee" },
+    { top: "Disney", phrase: "Walt Disney" },
+    { top: "Jobs", phrase: "Steve Jobs" },
+    { top: "Musk", phrase: "Elon Musk" },
+    { top: "Gates", phrase: "Bill Gates" }
   ],
   "Everyday Things": [
     { top: "Clock", phrase: "Alarm Clock" },
@@ -86,7 +106,12 @@ const DECK = {
     { top: "Towel", phrase: "Paper Towel" },
     { top: "Light", phrase: "Traffic Light" },
     { top: "Cart", phrase: "Shopping Cart" },
-    { top: "Fan", phrase: "Ceiling Fan" }
+    { top: "Fan", phrase: "Ceiling Fan" },
+    { top: "Chain", phrase: "Key Chain" },
+    { top: "Can", phrase: "Trash Can" },
+    { top: "Watch", phrase: "Wrist Watch" },
+    { top: "Lamp", phrase: "Desk Lamp" },
+    { top: "Duck", phrase: "Rubber Duck" }
   ],
   "Places": [
     { top: "Canyon", phrase: "Grand Canyon" },
@@ -103,7 +128,12 @@ const DECK = {
     { top: "Theater", phrase: "Movie Theater" },
     { top: "Stop", phrase: "Bus Stop" },
     { top: "Yard", phrase: "Front Yard" },
-    { top: "Station", phrase: "Fire Station" }
+    { top: "Station", phrase: "Fire Station" },
+    { top: "Tower", phrase: "Eiffel Tower" },
+    { top: "Square", phrase: "Times Square" },
+    { top: "Falls", phrase: "Niagara Falls" },
+    { top: "Desert", phrase: "Sahara Desert" },
+    { top: "River", phrase: "Amazon River" }
   ],
   "Actions & Sports": [
     { top: "Skating", phrase: "Ice Skating" },
@@ -120,7 +150,12 @@ const DECK = {
     { top: "Skating", phrase: "Speed Skating" },
     { top: "Wheel", phrase: "Cart Wheel" },
     { top: "Goose", phrase: "Duck Duck Goose" },
-    { top: "Chairs", phrase: "Musical Chairs" }
+    { top: "Chairs", phrase: "Musical Chairs" },
+    { top: "Race", phrase: "Sack Race" },
+    { top: "Jump", phrase: "Long Jump" },
+    { top: "Skating", phrase: "Figure Skating" },
+    { top: "Tennis", phrase: "Table Tennis" },
+    { top: "Tag", phrase: "Freeze Tag" }
   ],
   "Random Fun": [
     { top: "Wand", phrase: "Magic Wand" },
@@ -137,6 +172,31 @@ const DECK = {
     { top: "Charm", phrase: "Lucky Charm" },
     { top: "Code", phrase: "Secret Code" },
     { top: "Arm", phrase: "Robot Arm" },
-    { top: "Town", phrase: "Ghost Town" }
+    { top: "Town", phrase: "Ghost Town" },
+    { top: "Hero", phrase: "Super Hero" },
+    { top: "Star", phrase: "Ninja Star" },
+    { top: "Game", phrase: "Board Game" },
+    { top: "Stick", phrase: "Glow Stick" },
+    { top: "Wrap", phrase: "Bubble Wrap" }
+  ],
+  "Tagalog": [
+    { top: "Adobo", phrase: "Chicken Adobo" },
+    { top: "Sinigang", phrase: "Pork Sinigang" },
+    { top: "Halo", phrase: "Halo Halo" },
+    { top: "Lumpia", phrase: "Lumpia Shanghai" },
+    { top: "Bihon", phrase: "Pancit Bihon" },
+    { top: "Flan", phrase: "Leche Flan" },
+    { top: "Puto", phrase: "Puto Bumbong" },
+    { top: "Sisig", phrase: "Sisig Baboy" },
+    { top: "Kubo", phrase: "Bahay Kubo" },
+    { top: "Jeepney", phrase: "Jeepney Ride" },
+    { top: "Kumusta", phrase: "Kumusta Ka" },
+    { top: "Mahal", phrase: "Mahal Kita" },
+    { top: "Bahala", phrase: "Bahala Na" },
+    { top: "Pacquiao", phrase: "Manny Pacquiao" },
+    { top: "Boracay", phrase: "Boracay Beach" },
+    { top: "Balut", phrase: "Duck Balut" },
+    { top: "Tricycle", phrase: "Tricycle Driver" },
+    { top: "Barangay", phrase: "Barangay Captain" }
   ]
 };
