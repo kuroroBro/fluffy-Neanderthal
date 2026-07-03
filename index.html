@@ -51,10 +51,10 @@
       <details>
         <summary>How to Play</summary>
         <ul>
-          <li><strong>Speak Good:</strong> Draw a card and get your team to guess the secret word or phrase.</li>
+          <li><strong>Speak Good:</strong> Draw a card and get your team to guess it. Each card has a short <strong>Top Word</strong> and the <strong>Full Phrase</strong> it's part of.</li>
           <li><strong>Keep It Short:</strong> Only single-syllable clue words allowed. No exceptions!</li>
           <li><strong>Watch the Club:</strong> Slip up and say a big word? Tap <strong>CLUBBED!</strong> — you lose a point and the rival team gets to yell "BAD!" (bonus points for an actual inflatable club whack).</li>
-          <li><strong>Score:</strong> +1 for every correct guess, −1 if you get clubbed. Most points when time's up wins!</li>
+          <li><strong>Score:</strong> +1 if your team guesses the Top Word, +3 if they guess the Full Phrase, −1 if you get clubbed. Most points when time's up wins!</li>
         </ul>
       </details>
     </footer>
@@ -83,14 +83,27 @@
       <div id="clubFlash" class="club-flash">BAD! <span>🦴</span></div>
       <div class="secret-card" id="secretCard">
         <div class="secret-category" id="secretCategory">Category</div>
-        <div class="secret-word" id="secretWord">Word</div>
+        <div class="tier tier-top">
+          <div class="tier-label">Top Word <span class="tier-points">+1</span></div>
+          <div class="tier-value" id="secretTop">Word</div>
+        </div>
+        <div class="tier-divider">is part of</div>
+        <div class="tier tier-phrase">
+          <div class="tier-label">Full Phrase <span class="tier-points">+3</span></div>
+          <div class="tier-value" id="secretPhrase">Full Phrase</div>
+        </div>
       </div>
     </div>
 
     <div class="play-actions">
-      <button id="clubbedBtn" class="btn btn-club" type="button">🦴 CLUBBED!</button>
-      <button id="skipBtn" class="btn btn-skip" type="button">⏭ Skip</button>
-      <button id="correctBtn" class="btn btn-correct" type="button">✅ Got It!</button>
+      <div class="action-row action-row-guess">
+        <button id="topBtn" class="btn btn-top" type="button">🔼 Top Word <span class="pts">+1</span></button>
+        <button id="phraseBtn" class="btn btn-phrase" type="button">🔽 Full Phrase <span class="pts">+3</span></button>
+      </div>
+      <div class="action-row action-row-secondary">
+        <button id="clubbedBtn" class="btn btn-club" type="button">🦴 CLUBBED!</button>
+        <button id="skipBtn" class="btn btn-skip" type="button">⏭ Skip</button>
+      </div>
     </div>
   </section>
 

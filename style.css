@@ -301,9 +301,10 @@ html, body {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 24px;
+  padding: 22px;
   border: 3px solid rgba(255,255,255,0.08);
   box-shadow: 0 10px 0 rgba(0,0,0,0.35);
+  gap: 4px;
 }
 .secret-category {
   text-transform: uppercase;
@@ -311,9 +312,37 @@ html, body {
   font-size: 0.8rem;
   color: var(--accent-2);
   font-weight: 700;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
-.secret-word {
+
+.tier {
+  width: 100%;
+}
+.tier-label {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.tier-points {
+  color: var(--accent-2);
+  font-weight: 900;
+}
+.tier-top .tier-value {
+  font-size: clamp(1.4rem, 6vw, 2rem);
+  font-weight: 800;
+  color: var(--text-dim);
+}
+.tier-divider {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  opacity: 0.6;
+  margin: 6px 0;
+  font-style: italic;
+}
+.tier-phrase .tier-value {
   font-size: clamp(2rem, 9vw, 3rem);
   font-weight: 900;
   line-height: 1.15;
@@ -351,21 +380,41 @@ html, body {
 
 .play-actions {
   width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 10px;
   padding: 16px 0 8px;
 }
+.action-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
 .play-actions .btn {
-  padding: 18px 6px;
   font-size: 0.95rem;
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
+.action-row-guess .btn {
+  padding: 20px 8px;
+  font-size: 1.05rem;
+  flex-direction: column;
+}
+.action-row-secondary .btn {
+  padding: 14px 6px;
+  font-size: 0.9rem;
+}
+.pts {
+  font-weight: 900;
+  font-size: 0.85em;
+  opacity: 0.85;
+}
+.btn-top { background: #3d8bd4; color: white; box-shadow: 0 4px 0 #245c8f; }
+.btn-phrase { background: var(--good); color: white; box-shadow: 0 4px 0 #2e7d32; }
 .btn-club { background: var(--bad); color: white; box-shadow: 0 4px 0 #99101c; }
 .btn-skip { background: var(--skip); color: white; box-shadow: 0 4px 0 #454b50; }
-.btn-correct { background: var(--good); color: white; box-shadow: 0 4px 0 #2e7d32; }
 
 /* ---------- Round end / final ---------- */
 .round-end-card, .final-card {

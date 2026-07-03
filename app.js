@@ -154,7 +154,7 @@
   function buildDeck() {
     const cards = [];
     state.selectedCategories.forEach((cat) => {
-      (DECK[cat] || []).forEach((word) => cards.push({ category: cat, word }));
+      (DECK[cat] || []).forEach((card) => cards.push({ category: cat, top: card.top, phrase: card.phrase }));
     });
     return shuffle(cards);
   }
@@ -203,11 +203,13 @@
   function renderCard() {
     if (!state.currentCard) {
       $("secretCategory").textContent = "";
-      $("secretWord").textContent = "No more cards!";
+      $("secretTop").textContent = "No more cards!";
+      $("secretPhrase").textContent = "";
       return;
     }
     $("secretCategory").textContent = state.currentCard.category;
-    $("secretWord").textContent = state.currentCard.word;
+    $("secretTop").textContent = state.currentCard.top;
+    $("secretPhrase").textContent = state.currentCard.phrase;
   }
 
   function nextCard() {
@@ -251,9 +253,16 @@
     setTimeout(() => el.classList.remove("show"), CLUB_FLASH_MS);
   }
 
-  function handleCorrect() {
+  function handleTopWord() {
     if (state.timeLeft <= 0) return;
     currentTurnTeam().score += 1;
+    updatePlayHeader();
+    nextCard();
+  }
+
+  function handleFullPhrase() {
+    if (state.timeLeft <= 0) return;
+    currentTurnTeam().score += 3;
     updatePlayHeader();
     nextCard();
   }
@@ -316,7 +325,8 @@
   document.addEventListener("DOMContentLoaded", () => {
     initSetupScreen();
     $("readyBtn").addEventListener("click", startTurn);
-    $("correctBtn").addEventListener("click", handleCorrect);
+    $("topBtn").addEventListener("click", handleTopWord);
+    $("phraseBtn").addEventListener("click", handleFullPhrase);
     $("skipBtn").addEventListener("click", handleSkip);
     $("clubbedBtn").addEventListener("click", handleClubbed);
     $("nextTurnBtn").addEventListener("click", handleNextTurn);
