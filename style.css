@@ -475,20 +475,84 @@ html, body {
   z-index: 5;
   text-transform: uppercase;
   letter-spacing: 2px;
+  overflow: hidden;
+  opacity: 0;
 }
-.club-flash span { display: inline-block; margin-left: 12px; }
 .club-flash.show {
   display: flex;
-  animation: clubshake 0.55s ease;
+  animation: flashFade 0.75s ease forwards;
 }
-@keyframes clubshake {
-  0% { transform: translateX(0) scale(0.9); opacity: 0; }
-  15% { transform: translateX(-12px) scale(1.05); opacity: 1; }
-  30% { transform: translateX(12px); }
-  45% { transform: translateX(-8px); }
-  60% { transform: translateX(8px); }
-  75% { transform: translateX(-4px); }
-  100% { transform: translateX(0); opacity: 1; }
+@keyframes flashFade {
+  0% { opacity: 0; }
+  12% { opacity: 1; }
+  78% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.splat-burst {
+  position: absolute;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle, #fff8 0%, #fff0 65%);
+  clip-path: polygon(
+    50% 0%, 61% 32%, 93% 20%, 74% 48%,
+    100% 50%, 74% 52%, 93% 80%, 61% 68%,
+    50% 100%, 39% 68%, 7% 80%, 26% 52%,
+    0% 50%, 26% 48%, 7% 20%, 39% 32%
+  );
+  transform: scale(0) rotate(-8deg);
+  opacity: 0;
+  z-index: 1;
+}
+.club-flash.show .splat-burst {
+  animation: splatPop 0.6s cubic-bezier(.2,.9,.3,1) forwards;
+  animation-delay: 0.16s;
+}
+@keyframes splatPop {
+  0% { transform: scale(0) rotate(-14deg); opacity: 0; }
+  25% { transform: scale(1.25) rotate(4deg); opacity: 1; }
+  45% { transform: scale(1) rotate(0deg); opacity: 0.85; }
+  100% { transform: scale(1.05) rotate(0deg); opacity: 0; }
+}
+
+.club-flash.show .club-flash-icon {
+  z-index: 2;
+  animation: clubSwing 0.42s cubic-bezier(.25,.7,.3,1.5) forwards;
+}
+@keyframes clubSwing {
+  0% { transform: translate(130px, -130px) rotate(65deg) scale(0.6); opacity: 0; }
+  65% { transform: translate(-4px, 4px) rotate(-16deg) scale(1.15); opacity: 1; }
+  100% { transform: translate(2px, 0) rotate(-10deg) scale(1); opacity: 1; }
+}
+
+.club-flash-text {
+  display: inline-block;
+  z-index: 2;
+  margin-left: 12px;
+  transform: scale(0);
+  opacity: 0;
+}
+.club-flash.show .club-flash-text {
+  animation: textPop 0.45s ease forwards;
+  animation-delay: 0.16s;
+}
+@keyframes textPop {
+  0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+  55% { transform: scale(1.3) rotate(5deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.secret-card.card-hit {
+  animation: cardJolt 0.45s ease;
+  animation-delay: 0.16s;
+}
+@keyframes cardJolt {
+  0% { transform: translate(0, 0) rotate(0); }
+  20% { transform: translate(-7px, 4px) rotate(-2deg); }
+  40% { transform: translate(6px, -3px) rotate(2deg); }
+  60% { transform: translate(-4px, 2px) rotate(-1deg); }
+  80% { transform: translate(2px, -1px) rotate(1deg); }
+  100% { transform: translate(0, 0) rotate(0); }
 }
 
 .play-actions {

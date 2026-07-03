@@ -4,7 +4,7 @@
   const TEAM_COLORS = ["#ff595e", "#1982c4", "#8ac926", "#ffca3a", "#6a4c93", "#f4a261"];
   const MAX_TEAMS = 6;
   const MIN_TEAMS = 2;
-  const CLUB_FLASH_MS = 650;
+  const CLUB_FLASH_MS = 750;
 
   const state = {
     teams: [],
@@ -314,8 +314,13 @@
 
   function flashClub() {
     const el = $("clubFlash");
+    const card = $("secretCard");
     el.classList.add("show");
-    setTimeout(() => el.classList.remove("show"), CLUB_FLASH_MS);
+    if (card) card.classList.add("card-hit");
+    setTimeout(() => {
+      el.classList.remove("show");
+      if (card) card.classList.remove("card-hit");
+    }, CLUB_FLASH_MS);
   }
 
   function handleTopWord() {
