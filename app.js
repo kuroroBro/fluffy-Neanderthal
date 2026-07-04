@@ -426,6 +426,14 @@
   function endTurn() {
     const team = currentTurnTeam();
     state.lastTurnTeam = team;
+
+    // The card still on screen when time ran out never had a button
+    // clicked for it, so log it as a no-op skip — reviewable/adjustable
+    // like any other card in case the team actually got it in time.
+    if (state.currentCard) {
+      logAction("skip");
+    }
+
     updateRoundEndSummary();
     renderRoundLog();
 
