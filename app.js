@@ -5,6 +5,8 @@
   const MAX_TEAMS = 6;
   const MIN_TEAMS = 2;
   const CLUB_FLASH_MS = 750;
+  const ACTION_POINTS = { clubbed: -1, skip: 0, top: 1, phrase: 3 };
+  const ACTION_ICONS = { clubbed: "🦴", skip: "⏭", top: "🔼", phrase: "🔽" };
 
   const state = {
     teams: [],
@@ -19,7 +21,9 @@
     currentCard: null,
     timeLeft: 0,
     timerHandle: null,
-    turnStartScore: 0
+    turnStartScore: 0,
+    turnLog: [],
+    lastTurnTeam: null
   };
 
   // ---------- helpers ----------
@@ -295,6 +299,7 @@
   function startTurn() {
     const team = currentTurnTeam();
     state.turnStartScore = team.score;
+    state.turnLog = [];
     state.timeLeft = state.roundSeconds;
     state.currentCard = null;
     nextCard();
@@ -323,39 +328,106 @@
     }, CLUB_FLASH_MS);
   }
 
+  function logAction(action) {
+    if (!state.currentCard) return;
+    state.turnLog.push({
+      category: state.currentCard.category,
+      top: state.currentCard.top,
+      phrase: state.currentCard.phrase,
+      action
+    });
+  }
+
   function handleTopWord() {
     if (state.timeLeft <= 0) return;
-    currentTurnTeam().score += 1;
+    logAction("top");
+    currentTurnTeam().score += ACTION_POINTS.top;
     updatePlayHeader();
     nextCard();
   }
 
   function handleFullPhrase() {
     if (state.timeLeft <= 0) return;
-    currentTurnTeam().score += 3;
+    logAction("phrase");
+    currentTurnTeam().score += ACTION_POINTS.phrase;
     updatePlayHeader();
     nextCard();
   }
 
   function handleSkip() {
     if (state.timeLeft <= 0) return;
+    logAction("skip");
     nextCard();
   }
 
   function handleClubbed() {
     if (state.timeLeft <= 0) return;
-    currentTurnTeam().score -= 1;
+    logAction("clubbed");
+    currentTurnTeam().score += ACTION_POINTS.clubbed;
     updatePlayHeader();
     flashClub();
     nextCard();
   }
 
-  function endTurn() {
-    const team = currentTurnTeam();
+  function updateRoundEndSummary() {
+    const team = state.lastTurnTeam;
+    if (!team) return;
     const delta = team.score - state.turnStartScore;
     const verb = delta >= 0 ? "grunted their way to" : "stumbled to";
-    $("roundEndSummary").textContent = `${team.name} ${verb} ${delta} point${Math.abs(delta) === 1 ? "" : "s"} this turn.`;
+    const summaryEl = $("roundEndSummary");
+    if (summaryEl) {
+      summaryEl.textContent = `${team.name} ${verb} ${delta} point${Math.abs(delta) === 1 ? "" : "s"} this turn.`;
+    }
     renderMiniScoreboard($("roundEndScoreboard"), state.teams);
+  }
+
+  function renderRoundLog() {
+    const container = $("roundLog");
+    if (!container) return;
+    if (state.turnLog.length === 0) {
+      container.innerHTML = `<p class="round-log-empty">No cards seen this turn.</p>`;
+      return;
+    }
+    container.innerHTML = state.turnLog
+      .map((entry, i) => `
+        <div class="log-row">
+          <span class="log-phrase">${escapeHtml(entry.phrase)}</span>
+          <div class="log-actions">
+            ${Object.keys(ACTION_POINTS)
+              .map(
+                (action) => `
+              <button
+                type="button"
+                class="log-btn${entry.action === action ? " active" : ""}"
+                data-index="${i}"
+                data-action="${action}"
+                title="${action} (${ACTION_POINTS[action] >= 0 ? "+" : ""}${ACTION_POINTS[action]})"
+              >${ACTION_ICONS[action]}</button>
+            `
+              )
+              .join("")}
+          </div>
+        </div>
+      `)
+      .join("");
+  }
+
+  function adjustLogEntry(index, newAction) {
+    const entry = state.turnLog[index];
+    const team = state.lastTurnTeam;
+    if (!entry || !team || entry.action === newAction) return;
+    const delta = ACTION_POINTS[newAction] - ACTION_POINTS[entry.action];
+    entry.action = newAction;
+    team.score += delta;
+    renderRoundLog();
+    updateRoundEndSummary();
+  }
+
+  function endTurn() {
+    const team = currentTurnTeam();
+    state.lastTurnTeam = team;
+    updateRoundEndSummary();
+    renderRoundLog();
 
     state.turnIndex++;
     showScreen("screen-roundEnd");
@@ -414,5 +486,14 @@
     on("nextTurnBtn", handleNextTurn);
     on("playAgainBtn", playAgain);
     on("resetBtn", resetSetup);
+
+    const roundLog = $("roundLog");
+    if (roundLog) {
+      roundLog.addEventListener("click", (e) => {
+        const btn = e.target.closest(".log-btn");
+        if (!btn) return;
+        adjustLogEntry(Number(btn.dataset.index), btn.dataset.action);
+      });
+    }
   });
 })();
