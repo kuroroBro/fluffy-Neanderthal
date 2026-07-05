@@ -23,7 +23,8 @@
     timerHandle: null,
     turnStartScore: 0,
     turnLog: [],
-    lastTurnTeam: null
+    lastTurnTeam: null,
+    usedPhrases: new Set()
   };
 
   // ---------- helpers ----------
@@ -65,6 +66,7 @@
   }
 
   const STORAGE_PREFIX = "pfn.";
+  const USED_PHRASES_KEY = STORAGE_PREFIX + "usedPhrases";
 
   function clearAppStorage() {
     [window.localStorage, window.sessionStorage].forEach((store) => {
@@ -76,6 +78,33 @@
         // storage unavailable (private browsing, etc.) — nothing to clear
       }
     });
+  }
+
+  function cardKey(card) {
+    return `${card.category}::${card.phrase}`;
+  }
+
+  function loadUsedPhrases() {
+    try {
+      const raw = window.localStorage.getItem(USED_PHRASES_KEY);
+      return raw ? new Set(JSON.parse(raw)) : new Set();
+    } catch (e) {
+      return new Set();
+    }
+  }
+
+  function saveUsedPhrases() {
+    try {
+      window.localStorage.setItem(USED_PHRASES_KEY, JSON.stringify(Array.from(state.usedPhrases)));
+    } catch (e) {
+      // storage unavailable (private browsing, quota, etc.) — play on without persistence
+    }
+  }
+
+  function markCardUsed(card) {
+    if (!card) return;
+    state.usedPhrases.add(cardKey(card));
+    saveUsedPhrases();
   }
 
   // ---------- setup screen ----------
@@ -170,6 +199,7 @@
 
   function resetSetup() {
     clearAppStorage();
+    state.usedPhrases = new Set();
     state.nextTeamId = 1;
     state.teams = [makeTeam(), makeTeam()];
     state.roundSeconds = 60;
@@ -192,7 +222,18 @@
     state.selectedCategories.forEach((cat) => {
       (DECK[cat] || []).forEach((card) => cards.push({ category: cat, top: card.top, phrase: card.phrase }));
     });
-    return shuffle(cards);
+
+    const unseen = cards.filter((c) => !state.usedPhrases.has(cardKey(c)));
+
+    // Once every card in the selected categories has been shown in a
+    // previous game on this browser, start a fresh cycle for just those
+    // categories instead of coming up empty.
+    if (unseen.length === 0) {
+      cards.forEach((c) => state.usedPhrases.delete(cardKey(c)));
+      saveUsedPhrases();
+      return shuffle(cards);
+    }
+    return shuffle(unseen);
   }
 
   function ensureUniqueTeamNames() {
@@ -277,6 +318,7 @@
     const previousCard = state.currentCard;
     if (state.currentCard) state.discard.push(state.currentCard);
     state.currentCard = drawCard(previousCard);
+    markCardUsed(state.currentCard);
     renderCard();
   }
 
@@ -485,6 +527,7 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
+    state.usedPhrases = loadUsedPhrases();
     initSetupScreen();
     on("readyBtn", startTurn);
     on("topBtn", handleTopWord);
