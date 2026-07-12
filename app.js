@@ -7,6 +7,7 @@
   const CLUB_FLASH_MS = 750;
   const ACTION_POINTS = { clubbed: -1, skip: 0, top: 1, phrase: 3 };
   const ACTION_ICONS = { clubbed: "🦴", skip: "⏭", top: "🔼", phrase: "🔽" };
+  const RESET_USED_CARDS_MESSAGE = "All cards in the selected word piles have been used. Reset card data so cards can be reused?";
 
   const state = {
     teams: [],
@@ -226,9 +227,10 @@
     const unseen = cards.filter((c) => !state.usedPhrases.has(cardKey(c)));
 
     // Once every card in the selected categories has been shown in a
-    // previous game on this browser, start a fresh cycle for just those
-    // categories instead of coming up empty.
+    // previous game on this browser, ask before starting a fresh cycle for
+    // just those categories.
     if (unseen.length === 0) {
+      if (!window.confirm(RESET_USED_CARDS_MESSAGE)) return null;
       cards.forEach((c) => state.usedPhrases.delete(cardKey(c)));
       saveUsedPhrases();
       return shuffle(cards);
@@ -257,6 +259,7 @@
     if (state.selectedCategories.size === 0) return;
 
     state.deck = buildDeck();
+    if (!state.deck) return;
     state.discard = [];
 
     state.turnQueue = [];
