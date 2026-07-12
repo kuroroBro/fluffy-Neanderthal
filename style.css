@@ -44,6 +44,13 @@ html, body {
   overscroll-behavior: none;
 }
 
+body:has(#screen-setup.active) {
+  background:
+    linear-gradient(180deg, rgba(28, 18, 10, 0.55) 0%, rgba(28, 18, 10, 0.92) 85%),
+    url('assets/home-bg.jpg') center top / cover no-repeat;
+  background-attachment: fixed;
+}
+
 .app {
   min-height: 100vh;
   min-height: 100dvh;
